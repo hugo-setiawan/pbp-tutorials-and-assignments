@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+# show_wishlist view as defined in tutorial document
+def show_wishlist(request):
+    return render(request, "wishlist.html")
