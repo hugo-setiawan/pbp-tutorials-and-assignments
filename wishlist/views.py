@@ -6,8 +6,10 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # show_wishlist view as defined in tutorial document
+@login_required(login_url='/wishlist/login/')
 def show_wishlist(request):
     # get data from BarangWishlist model
     data_barang_wishlist = BarangWishlist.objects.all()
