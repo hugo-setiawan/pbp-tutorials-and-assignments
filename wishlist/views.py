@@ -5,7 +5,7 @@ from django.core import serializers
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # show_wishlist view as defined in tutorial document
 def show_wishlist(request):
@@ -41,7 +41,7 @@ def register(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Akun telah berhasil dibuat!')
-            return redirect('wishlist:login')
+            return redirect('wishlist:login_user')
     
     context = {
         'form': form
@@ -65,3 +65,7 @@ def login_user(request):
     
     context = {}
     return render(request, 'login.html', context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('wishlist:login_user')
