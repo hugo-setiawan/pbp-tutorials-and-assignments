@@ -1,7 +1,9 @@
+import datetime
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
+from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -15,7 +17,8 @@ def show_wishlist(request):
     data_barang_wishlist = BarangWishlist.objects.all()
     context = {
         'list_barang': data_barang_wishlist,
-        'nama': 'Hugo'
+        'nama': 'Hugo',
+        'last_login': request.COOKIES['last_login'],
     }
     return render(request, "wishlist.html", context)
 
@@ -60,7 +63,9 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
-            return redirect('wishlist:show_wishlist')
+            response =  HttpResponseRedirect(reverse('wishlist:show_wishlist'))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
 
         else:
             messages.info(request, 'Username atau Password salah!')
@@ -70,4 +75,6 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('wishlist:login_user')
+    response = HttpResponseRedirect(reverse('wishlist:login_user'))
+    response.delete_cookie('last_login')
+    return response
