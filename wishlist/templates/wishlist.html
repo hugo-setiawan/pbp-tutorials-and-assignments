@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% comment %} Navbar {% endcomment %}
+<nav class="navbar navbar-expand-md" style="background-color: #e1e1e1c7;">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Hugo Sulaiman Setiawan</span>
+        <div class="collapse navbar-collapse" id="navbar-top-buttons">
+            <div class="navbar-nav">
+                <a class="nav-link" href="logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
 <h5>Nama: </h5>
 <p>{{nama}}</p> {% comment %} Nama diambil dari context pada view {% endcomment %}
 
