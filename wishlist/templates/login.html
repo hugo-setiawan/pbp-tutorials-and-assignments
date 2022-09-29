@@ -6,26 +6,26 @@
 
 {% block content %}
 
-<div class = "login">
+<div class = "login container mt-3">
 
     <h1>Login</h1>
 
     <form method="POST" action="">
         {% csrf_token %}
         <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+            <tr class="row">
+                <td class="col-4 mb-2">Username: </td>
+                <td class="col mb-2"><input type="text" name="username" placeholder="Username" class="form-control"></td>
             </tr>
                     
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+            <tr class="row">
+                <td class="col-4 mb-2">Password: </td>
+                <td class="col mb-2"><input type="password" name="password" placeholder="Password" class="form-control"></td>
             </tr>
 
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
+            <tr class="row">
+                <td class="col-4 mt-3 mb-3"></td>
+                <td class="col mt-3 mb-3"><input class="btn btn-primary login_btn" type="submit" value="Login"></td>
             </tr>
         </table>
     </form>
