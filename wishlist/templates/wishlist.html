@@ -3,9 +3,12 @@
 {% block content %}
 
 {% comment %} Navbar {% endcomment %}
-<nav class="navbar navbar-expand-md" style="background-color: #e1e1e1c7;">
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
     <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">Hugo Sulaiman Setiawan</span>
+        <span class="navbar-brand mb-0 h1">{{nama}}</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbar-top-buttons">
             <div class="navbar-nav">
                 <a class="nav-link" href="logout">Logout</a>
@@ -34,6 +37,6 @@
     {% endfor %}
 </table>
 <h5>Sesi terakhir login: {{ last_login }}</h5>
-<button><a href="{% url 'wishlist:logout_user' %}">Logout</a></button>
+<button type="button" class="btn btn-danger"><a href="{% url 'wishlist:logout_user' %}" style="text-decoration: none">Logout</a></button>
 
 {% endblock content %}
