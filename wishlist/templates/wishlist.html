@@ -20,21 +20,25 @@
 <h5>Nama: </h5>
 <p>{{nama}}</p> {% comment %} Nama diambil dari context pada view {% endcomment %}
 
-<table>
-    <tr>
-    <th>Nama Barang</th>
-    <th>Harga Barang</th>
-    <th>Deskripsi</th>
-    </tr>
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Nama Barang</th>
+            <th scope="col">Harga Barang</th>
+            <th scope="col">Deskripsi</th>
+        </tr>
+    </thead>
     {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
     {% comment %} Cetak tabel dengan detail tiap anggota BarangWishlist {% endcomment %}
-    {% for barang in list_barang %}
-    <tr>
-        <th>{{barang.nama_barang}}</th>
-        <th>{{barang.harga_barang}}</th>
-        <th>{{barang.deskripsi}}</th>
-    </tr>
-    {% endfor %}
+    <tbody class="table-group-divider">
+        {% for barang in list_barang %}
+        <tr>
+            <td>{{barang.nama_barang}}</td>
+            <td>{{barang.harga_barang}}</td>
+            <td>{{barang.deskripsi}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 <h5>Sesi terakhir login: {{ last_login }}</h5>
 <button type="button" class="btn btn-danger"><a href="{% url 'wishlist:logout_user' %}" style="text-decoration: none">Logout</a></button>
