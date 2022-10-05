@@ -21,7 +21,7 @@
     <h5>Nama: </h5>
     <p>{{nama}}</p> {% comment %} Nama diambil dari context pada view {% endcomment %}
 
-    <table class="table table-striped table-hover table-bordered mx-auto">
+    <table id="table-wishlist" class="table table-striped table-hover table-bordered mx-auto">
         <thead>
             <tr>
                 <th scope="col">Nama Barang</th>
@@ -29,19 +29,30 @@
                 <th scope="col">Deskripsi</th>
             </tr>
         </thead>
-        {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
-        {% comment %} Cetak tabel dengan detail tiap anggota BarangWishlist {% endcomment %}
-        <tbody class="table-group-divider">
-            {% for barang in list_barang %}
-            <tr>
-                <td>{{barang.nama_barang}}</td>
-                <td>{{barang.harga_barang}}</td>
-                <td>{{barang.deskripsi}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        {% comment %} Data akan ditambahkan ke tbody dengan AJAX JQuery {% endcomment %}
+        <tbody class="table-group-divider"></tbody>
     </table>
     <p><b>Sesi terakhir login: {{ last_login }}</b></p>
     <button type="button" class="btn btn-danger"><a href="{% url 'wishlist:logout_user' %}" style="text-decoration: none">Logout</a></button>
 </div>
+<script type="text/javascript">
+    $.getJSON("{% url 'wishlist:data_json_wishlist' %}", function(data) {
+            $(data).each(function(i, entry) {
+                $("#table-wishlist > tbody").append($("<tr>")
+                    .append($("<td>").append(entry.fields.nama_barang))
+                    .append($("<td>").append(entry.fields.harga_barang))
+                    .append($("<td>").append(entry.fields.deskripsi)));
+            })
+            })
+
+    .done(function(){
+        console.log("data loaded!");
+    })
+
+    .fail(function(e){
+        console.log('error:');
+        console.error(e);
+    });
+
+</script>
 {% endblock content %}
