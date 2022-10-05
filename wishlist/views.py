@@ -4,6 +4,8 @@ from wishlist.models import BarangWishlist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from django.urls import reverse
+from django.utils.encoding import iri_to_uri
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -63,7 +65,18 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
-            response =  HttpResponseRedirect(reverse('wishlist:show_wishlist'))
+
+            # redirect implementation https://stackoverflow.com/a/44807947
+            next_url = request.GET.get('next')
+
+            # redirect URL validation https://stackoverflow.com/a/60372947
+            if next_url and url_has_allowed_host_and_scheme(next_url, None):
+                next_url = iri_to_uri(next_url)
+                response = HttpResponseRedirect(next_url)
+            else:
+                # default is normal wishlist page
+                response = HttpResponseRedirect(reverse('wishlist:show_wishlist'))
+
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
 
