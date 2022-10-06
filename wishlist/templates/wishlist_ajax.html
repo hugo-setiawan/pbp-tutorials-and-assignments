@@ -32,10 +32,41 @@
         {% comment %} Data akan ditambahkan ke tbody dengan AJAX JQuery {% endcomment %}
         <tbody class="table-group-divider"></tbody>
     </table>
+
+    <form id="form_tambah_barang" action="{% url 'wishlist:add_wishlist_json_ajax' %}" method="post">
+        <table class="mb-4">
+            <tr class="row">
+                <div class="form-floating col-lg-4 mb-2">
+                    <input type="text" name="nama_barang" required id="id_nama_barang" placeholder="Nama Barang" class="form-control">
+                    <label for="id_nama_barang" class="form-label">Nama Barang</label>
+                </div>
+            </tr>
+            <tr class="row mb-4">
+                <div class="form-floating col-lg-4 mb-2">
+                    <input type="text" name="harga_barang" required id="id_harga_barang" placeholder="Harga Barang" class="form-control"></textarea>
+                    <label for="id_harga_barang" class="form-label">Harga Barang</label>
+                </div>
+            </tr>
+            <tr class="row mb-4">
+                <div class="form-floating col-lg-4 mb-4">
+                    <input type="text" name="deskripsi" required id="id_deskripsi" placeholder="Deskripsi Barang" class="form-control"></textarea>
+                    <label for="id_deskripsi" class="form-label">Deskripsi Barang</label>
+                </div>
+            </tr>
+            <tr class="row">
+                <div class="form-floating mb-3 d-grid d-lg-block">
+                    <input class="btn btn-primary btn-lg" type="submit" name="submit" value="Tambah" />
+                </div>   
+            </tr>
+        </table>
+    </form>
+
     <p><b>Sesi terakhir login: {{ last_login }}</b></p>
     <button type="button" class="btn btn-danger"><a href="{% url 'wishlist:logout_user' %}" style="text-decoration: none">Logout</a></button>
 </div>
+
 <script type="text/javascript">
+    /* AJAX GET (getJSON) Referenced from https://youtu.be/LAA6fWfC1Cc */
     $.getJSON("{% url 'wishlist:data_json_wishlist' %}", function(data) {
             $(data).each(function(i, entry) {
                 $("#table-wishlist > tbody").append($("<tr>")
@@ -54,5 +85,39 @@
         console.error(e);
     });
 
+    /* AJAX POST */
+    /* Menggunakan plugin serializeJSON untuk memproses data dari form */
+    $("#form_tambah_barang").submit(function(e) {
+        e.preventDefault();
+
+        /* url action dari form */
+        var actionurl = e.currentTarget.action;
+        var formJSON = JSON.stringify($("#form_tambah_barang").serializeJSON());
+
+        $.ajax({
+                url: actionurl,
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    data: formJSON,
+                    csrfmiddlewaretoken: "{{ csrf_token }}" // kl ga gini csrf token ga kebaca sm middleware
+                },
+
+                success: function(response) {
+                    $(response).each(function(i, entry) {
+                        $("#table-wishlist > tbody").append($("<tr>")
+                            .append($("<td>").append(entry.fields.nama_barang))
+                            .append($("<td>").append(entry.fields.harga_barang))
+                            .append($("<td>").append(entry.fields.deskripsi)));
+                    })
+                    console.log("data sent and rerendered successfully!");
+                },
+
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+        });
+
+    });
 </script>
 {% endblock content %}

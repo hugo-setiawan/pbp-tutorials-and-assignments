@@ -1,4 +1,5 @@
 import datetime
+import json
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
 from django.http import HttpResponse, HttpResponseRedirect
@@ -35,6 +36,21 @@ def show_wishlist_ajax(request):
         'last_login': request.COOKIES['last_login'],
     }
     return render(request, "wishlist_ajax.html", context)
+
+# add_wishlist_json for tutorial 5
+@login_required(login_url='/wishlist/login/')
+def add_wishlist_json_ajax(request):
+    if request.method == "POST":
+        # JSON data ditaruh sbg param post di data
+        data = json.loads(request.POST['data'])
+
+        new_task = BarangWishlist(nama_barang=data["nama_barang"], harga_barang=data["harga_barang"], deskripsi=data["deskripsi"]) # probably unsafe, validate?
+        new_task.save()
+
+        # new_task dijadiin list karena paramnya harus berupa iterable
+        return HttpResponse(serializers.serialize("json", [new_task]), content_type="application/json")
+
+    return redirect('wishlist:show_wishlist')
 
 def data_xml_wishlist(request):
     data_barang_wishlist = BarangWishlist.objects.all()
