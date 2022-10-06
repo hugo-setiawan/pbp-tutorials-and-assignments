@@ -109,7 +109,10 @@
                             .append($("<td>").append(entry.fields.nama_barang))
                             .append($("<td>").append(entry.fields.harga_barang))
                             .append($("<td>").append(entry.fields.deskripsi)));
-                    })
+                    });
+                    $('#form_tambah_barang').each(function(){
+                        this.reset();
+                    });
                     console.log("data sent and rerendered successfully!");
                 },
 
