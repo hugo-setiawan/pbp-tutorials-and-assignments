@@ -50,7 +50,7 @@ def add_wishlist_json_ajax(request):
         # new_task dijadiin list karena paramnya harus berupa iterable
         return HttpResponse(serializers.serialize("json", [new_task]), content_type="application/json")
 
-    return redirect('wishlist:show_wishlist')
+    return redirect('wishlist:show_wishlist_ajax')
 
 def data_xml_wishlist(request):
     data_barang_wishlist = BarangWishlist.objects.all()
