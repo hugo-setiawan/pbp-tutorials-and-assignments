@@ -81,7 +81,7 @@
     })
 
     .fail(function(e){
-        console.log('error:');
+        console.log('data loading error:');
         console.error(e);
     });
 
@@ -117,6 +117,7 @@
                 },
 
                 error: function(xhr, resp, text) {
+                    console.log("data posting error:")
                     console.log(xhr, resp, text);
                 }
         });
